@@ -284,9 +284,9 @@ export interface IBasketData {
     
 Методы:
     
-`set items(items: HTMLElement[]): void` — установить элементы корзины в свойтсво `_basketList` класса;
+- `set items(items: HTMLElement[]): void` — установить элементы корзины в свойтсво `_basketList` класса;
 
-`set total(value: number): void` — установить значение общей суммы покупки;
+- `set total(value: number): void` — установить значение общей суммы покупки;
     
 **`Order`**
 
@@ -307,15 +307,15 @@ export interface IBasketData {
 
 Поля:
 
-`protected _email: HTMLInputElement`;
+- `protected _email: HTMLInputElement`;
   
-`protected _phone: HTMLInputElement`.
+- `protected _phone: HTMLInputElement`.
     
 Методы:
 
-`set email(value: string): void` — установить значение поля электронной почты;
+- `set email(value: string): void` — установить значение поля электронной почты;
 
-`set phone(value: string): void` — установить значение поля номера телефона;
+- `set phone(value: string): void` — установить значение поля номера телефона;
 
     
 **`Success`**
