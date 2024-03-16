@@ -126,7 +126,7 @@ export interface IBasketData {
 ```
 
 
-## **Модель данных**
+## *Модель данных*
 
 **`Model<T>`**
     
@@ -140,6 +140,13 @@ export interface IBasketData {
 **`AppState`**
     
 Класс для работы с состояниями приложения(карточек, корзины, заказов). Наследуется от класса `Model`.
+
+Поля:
+
+- `protected products: IProduct[]`;
+- `protected basket: string[]`;
+- `protected order: IOrder`;
+
 
 Методы:
 
@@ -162,6 +169,7 @@ export interface IBasketData {
 - `setOrderField(field: keyof (IContactsForm & IOrderForm), value: string)` — установить значения полей заказа;
 
 - `getOrder(): IOrder` — получить заполенную форму заказа.
+
 
 ## *Компоненты представления*
 
@@ -323,7 +331,7 @@ export interface IBasketData {
   
 - `set description(value: number): void` — устанавливает значение общей суммы заказа.
     
-## **Presenter**
+## *Presenter*
 
 **`EventEmitter`**
     
