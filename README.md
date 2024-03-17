@@ -11,7 +11,7 @@
 - src/pages/index.html — HTML-файл главной страницы
 - src/types/index.ts — файл с типами
 - src/index.ts — точка входа приложения
-- src/styles/styles.scss — корневой файл стилей
+- src/scss/styles.scss — корневой файл стилей
 - src/utils/constants.ts — файл с константами
 - src/utils/utils.ts — файл с утилитами
 
@@ -101,14 +101,6 @@ export interface IOrderResult {
 }
 ```
 
-- `IGalleryData` - карточки продуктов
-
-```tsx
-export interface IGalleryData {
-	items: HTMLButtonElement[];
-}
-```
-
 - `IModalData` - модальное окно
 
 ```tsx
@@ -130,7 +122,7 @@ export interface IBasketData {
 
 **`Model<T>`**
     
-В проекте выполняет роль Model. Абстрактный класс служит средством для хранения данных поступающих с сервера.
+Абстрактный класс служит средством для хранения данных поступающих с сервера. От него наследуются классы, которые выполняют роль Model. 
 
 Методы:
 
@@ -143,8 +135,8 @@ export interface IBasketData {
 
 Поля:
 
-- `protected products: IProduct[]`;
-- `protected basket: string[]`;
+- `protected products: IProductItem[]`;
+- `protected basket: IProductItem[]`;
 - `protected order: IOrder`;
 
 
@@ -152,15 +144,13 @@ export interface IBasketData {
 
 - `setProducts(items: IProduct[]): void` — записать данные о продуктах;
 
-- `getProducts(): IProduct[]` — получить данные о продуктах;
-
-- `setPreviewCard(item: IProduct): void` — записать данные продукта;
+- `getProducts(): IProductItem[]` — получить данные о продуктах;
 
 - `addToBasket(item: IProductItem): void` — добавить в корзину;
 
-- `removaFromBasket(item: IProduct): void` — удалить из корзины;
+- `removeFromBasket(item: IProductItem): void` — удалить из корзины;
 
-- `getBasketItems(): IProduct[]` — получить данные продуктов в корзине;
+- `getBasketItems(): IProductItem[]` — получить данные продуктов в корзине;
 
 - `getTotal(): number ` — получить общую сумму стоимость товаров в корзине;
 
@@ -205,7 +195,7 @@ export interface IBasketData {
 
 Методы:
 
-- `content(content: HTMLElement): void` — устанавливает контент внутри модального окна;
+- `set content(content: HTMLElement): void` — устанавливает контент внутри модального окна;
 
 - `open: void` — открывает модальное окно;
 
@@ -244,7 +234,7 @@ export interface IBasketData {
     
 - `set counter(value: number): void` — установить значение счетчика;
 
-- `set gallery(gallery: IGalleryData): void` — отобразить продукты.
+- `set gallery(items: HTMLElement[]): void` — отобразить продукты.
     
 **`Card`**
     
@@ -268,7 +258,7 @@ export interface IBasketData {
 
 `set image(value: string): void` — установить значение картинки товара;
 
-`set descriptonvalue: string) : void` — установить значение описания товара;
+`set descripton(value: string): void` — установить значение описания товара;
 
 `set price(value: number | null): void` — установить значение стоимости товара.
     
@@ -299,7 +289,7 @@ export interface IBasketData {
     
 - `set address(value: string): void` — установить значение поля адрес;
   
-- `selected(): void` — отвечает за установку класса для выбранной кнопки способа оплаты.
+- `selected(name: string): void` — отвечает за установку класса для выбранной кнопки способа оплаты.
     
 **`Contacts`**
     
@@ -331,11 +321,11 @@ export interface IBasketData {
   
 - `set description(value: number): void` — устанавливает значение общей суммы заказа.
     
-## *Presenter*
+## *События*
 
 **`EventEmitter`**
     
-В проекте выполняет роль Presenter.Представляет собой брокер событий. Его функции: возможность установить и снять слушателей событий, вызвать слушателей при возникновении события.
+Представляет собой брокер событий. Его функции: возможность установить и снять слушателей событий, вызвать слушателей при возникновении события.
 
 Поля:
 
@@ -356,6 +346,24 @@ export interface IBasketData {
 - `offAll(): void`  — Снять обработчики со всех событий;
 
 - `trigger<T extends object>(eventName: string, context?: Partial<T>): (data: T) => void` — Сделать коллбек триггер, генерирующий событие при вызове.
+
+**Описание событий**
+
+- `gallery:changed` — изменились продукты;
+- `modal:open` — модальное окно открыто;
+- `modal:close` — модальное окно закрыто;
+- `card:open` — выбрана карточка; 
+- `basket:changed` — изменились элементы корзины;
+- `basket:open` — корзина открыта;
+- `basket:submit` — подтверждение заказа;
+- `payment:change` — выбран способ оплаты;
+- `address:change` — изменилось поле ввода адреса доставки;
+- `order:submit` — детали заказа подтверждены;
+- `email:change` — изменилось поле ввода email;
+- `phone:change` — изменилось поле ввода номера телефона;
+- `contacts:submit` — форма контактов подтверждена.
+
+## *Слой коммуникации*
 
 **`Api`**
     
@@ -389,21 +397,3 @@ export interface IBasketData {
     
 - `orderProducts(order: IOrder): IOrderResult` — отправить заказ и получить ответ от сервера об успешной отправке в виде идентификатора заказа и общей стоимости;
 
-
-**Описание событий**
-
-- `gallery:changed` — изменились продукты;
-- `modal:open` — модальное окно открыто;
-- `modal:close` — модальное окно закрыто;
-- `card:open` — выбрана карточка; 
-- `basket:changed` — изменились элементы корзины;
-- `basket:open` — корзина открыта;
-- `basket:submit` — переход к оформлению заказа;
-- `order:open` — открыта форма деталей заказа;
-- `payment:selected` — выбран способ оплаты;
-- `address:change` — изменилось поле ввода адреса доставки;
-- `order:submit` — детали заказа подтверждены;
-- `contacts:open` — открыта форма контактов;
-- `email:change` — изменилось поле ввода email;
-- `phone:change` — изменилось поле ввода номера телефона;
-- `contacts:submit` — форма контактов подтверждена.

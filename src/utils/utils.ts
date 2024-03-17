@@ -133,3 +133,10 @@ export function createElement<
     }
     return element;
 }
+
+/**
+* Отформатировать число по шаблону с символом между классами тысяч
+**/
+export function formatNumberWithSeparator(x: number, sep = ' ') {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
